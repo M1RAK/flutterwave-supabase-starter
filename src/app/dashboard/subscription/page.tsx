@@ -65,7 +65,7 @@ export default function SubscriptionDashboard() {
 
 				// Fetch transaction history
 				const txResponse = await fetch(
-					`/api/transactions?email=${authUser.email}`
+					`/api/transactions?email=ravesb_90e1ed81a988f528b017_${authUser.email}`
 				)
 				const txData = await txResponse.json()
 				if (txData.success) {
@@ -161,10 +161,14 @@ export default function SubscriptionDashboard() {
 						{/* User Profile Card */}
 						<div className='bg-white rounded-xl p-4 shadow-sm border border-gray-100'>
 							<div className='flex items-center space-x-3'>
-								<div className='w-12 h-12 bg-linear-to-br from-flutterwave-orange to-orange-600 rounded-full flex items-center justify-center'>
-									<span className='text-white font-bold text-lg'>
-										{user.email?.[0].toUpperCase()}
-									</span>
+								<div className='h-8 w-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center'>
+									{user?.user_metadata?.avatar_url && (
+										<img
+											src={user.user_metadata.avatar_url}
+											alt='User avatar'
+											className='h-full w-full object-cover'
+										/>
+									)}
 								</div>
 								<div>
 									<p className='font-semibold text-gray-900'>
