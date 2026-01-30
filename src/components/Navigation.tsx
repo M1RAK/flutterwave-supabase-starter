@@ -45,18 +45,17 @@ export default function Navigation() {
 
 					{/* Navigation Links */}
 					<div className='hidden md:flex items-center space-x-8'>
-						<Link
-							href='/'
-							className={`text-sm font-medium transition-colors ${
-								pathname === '/'
-									? 'text-flutterwave-orange'
-									: 'text-gray-600 hover:text-flutterwave-dark'
-							}`}>
-							Home
-						</Link>
-
 						{user && (
 							<>
+								<Link
+									href='/'
+									className={`text-sm font-medium transition-colors ${
+										pathname === '/'
+											? 'text-flutterwave-orange'
+											: 'text-gray-600 hover:text-flutterwave-dark'
+									}`}>
+									Home
+								</Link>
 								<Link
 									href='/subscription'
 									className={`text-sm font-medium transition-colors ${
@@ -83,10 +82,18 @@ export default function Navigation() {
 					<div className='flex items-center space-x-4'>
 						{user ? (
 							<div className='flex items-center space-x-4'>
-								<div className='hidden sm:block'>
-									<p className='text-sm text-gray-600'>
-										{user.email}
-									</p>
+								<div className='h-8 w-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center'>
+									{user?.user_metadata?.avatar_url ? (
+										<img
+											src={user.user_metadata.avatar_url}
+											alt='User avatar'
+											className='h-full w-full object-cover'
+										/>
+									) : (
+										<span className='text-sm font-medium text-gray-600'>
+											{user.email?.[0]?.toUpperCase()}
+										</span>
+									)}
 								</div>
 								<button
 									onClick={handleSignOut}
