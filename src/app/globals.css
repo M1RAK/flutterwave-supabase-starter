@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+:root {
+	--background: #ffffff;
+	--foreground: #171717;
+}
+
+@theme {
+	--color-flutterwave-orange: #f5a623;
+	--color-flutterwave-dark: #1a1a1a;
+	--color-flutterwave-gray: #6b7280;
+}
+
+/* @theme inline {
+} */
+
+body {
+	font-family: var(--font-dm-sans), sans-serif;
+}

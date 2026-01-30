@@ -1,0 +1,7 @@
+.next
+.vscode
+node_modules
+logs
+notes
+.env*
+*workspace.yaml
