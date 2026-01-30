@@ -22,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="google-site-verification" content="74FJ-FQ0yrSHQfjXyj2jsUXaV2haLwPwWLwKG2H2UHc" />
       <body
         className={`${dmSans.variable} antialiased`}
       >
