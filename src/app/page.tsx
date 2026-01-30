@@ -285,20 +285,20 @@ export default function Home() {
 							Licensed.
 						</p>
 						<div className='flex space-x-6 mt-4 md:mt-0'>
-							<a
-								href='#'
+							<Link
+								href='/terms'
 								className='text-gray-600 hover:text-flutterwave-orange text-sm'>
-								Documentation
-							</a>
+								Terms of Service
+							</Link>
+							<Link
+								href='/privacy'
+								className='text-gray-600 hover:text-flutterwave-orange text-sm'>
+								Privacy Policy
+							</Link>
 							<a
-								href='#'
+								href='https://github.com/m1rak/flutterwave-supabase-starter'
 								className='text-gray-600 hover:text-flutterwave-orange text-sm'>
 								GitHub
-							</a>
-							<a
-								href='#'
-								className='text-gray-600 hover:text-flutterwave-orange text-sm'>
-								Support
 							</a>
 						</div>
 					</div>
