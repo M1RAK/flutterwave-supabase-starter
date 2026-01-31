@@ -41,6 +41,14 @@ export default function Navigation() {
 						<span className='font-bold text-xl text-flutterwave-dark'>
 							FW × Supabase
 						</span>
+						{/* Environment Badge */}
+						{process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY?.includes(
+							'TEST'
+						) && (
+							<span className='ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded'>
+								DEMO MODE
+							</span>
+						)}
 					</Link>
 
 					{/* Navigation Links */}

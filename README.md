@@ -6,6 +6,124 @@ A production-ready SaaS starter template with subscription billing powered by Fl
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)
 
+## 🧪 Quick Start: Demo Mode vs Production Mode
+
+This starter works in **both** test and production environments automatically.
+
+### Demo Mode (Current Setup)
+
+The repository comes pre-configured with **test mode** enabled, so you can:
+
+✅ Clone and run immediately
+✅ Test subscriptions with test cards (no real money)
+✅ See the full workflow without Flutterwave account
+✅ Explore all features safely
+
+**Test Card Details:**
+- **Card Number:** 5531886652142950
+- **CVV:** 564
+- **Expiry:** 09/32
+- **PIN:** 3310
+
+**Note:** In test mode, Flutterwave adds a prefix to emails (e.g., `ravesb_xxxx_email@gmail.com`). This is handled automatically by our code.
+
+---
+
+### 🚀 Switching to Production
+
+When you're ready to accept real payments:
+
+#### Step 1: Get Live API Keys
+
+1. Complete KYC verification in your [Flutterwave Dashboard](https://dashboard.flutterwave.com)
+2. Go to **Settings** → **API Keys**
+3. Switch to **Live** mode (toggle at top)
+4. Copy your **Live Public Key** and **Live Secret Key**
+
+#### Step 2: Update Environment Variables
+
+Replace test keys in `.env.local`:
+
+```bash
+# Change from TEST to LIVE keys
+NEXT_PUBLIC_FLW_PUBLIC_KEY=FLWPUBK-xxxxxxxxxxxxxxxxxx
+FLW_SECRET_KEY=FLWSECK-xxxxxxxxxxxxxxxxxx
+
+# Everything else stays the same
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_key
+SUPABASE_SECRET_KEY=your_secret
+FLUTTERWAVE_SECRET_HASH=your_webhook_secret
+```
+
+#### Step 3: Update Webhook URL
+
+1. In Flutterwave Dashboard → **Settings** → **Webhooks**
+2. Change webhook URL from `localhost` to your production domain:
+   ```
+   https://yourdomain.com/api/webhook
+   ```
+
+#### Step 4: Update Payment Plans
+
+Create production payment plans (test plans won't work in live mode):
+
+1. Switch to **Live** mode in Flutterwave Dashboard
+2. Go to **Payments** → **Payment Plans**
+3. Recreate your plans (Basic, Premium, etc.)
+4. Copy the new plan IDs
+
+#### Step 5: Deploy
+
+```bash
+git push origin main
+# Vercel/Netlify will auto-deploy
+```
+
+**That's it!** No code changes needed. The app automatically:
+- ✅ Detects live mode from API keys
+- ✅ Removes the "Demo Mode" banner
+- ✅ Handles real emails (no sandbox prefix)
+- ✅ Processes actual payments
+
+---
+
+### 🔍 Verification Checklist
+
+After switching to production:
+
+- [ ] Live mode badge is gone from navigation
+- [ ] Real card test successful (use small amount!)
+- [ ] Webhook receives real payment notifications
+- [ ] Subscription appears in Supabase database
+- [ ] User dashboard shows correct plan
+- [ ] Emails sent without sandbox prefix
+
+---
+
+### ⚠️ Important Production Notes
+
+1. **Webhook Security**: Ensure `FLUTTERWAVE_SECRET_HASH` is set correctly
+2. **SSL Required**: Production must use HTTPS (automatic on Vercel/Netlify)
+3. **Test Thoroughly**: Test with small amounts before launching
+4. **Compliance**: Ensure Terms of Service and Privacy Policy are customized
+5. **Monitoring**: Set up error tracking (Sentry, LogRocket, etc.)
+
+---
+
+### 🆘 Troubleshooting
+
+**Problem:** Payments fail in production
+**Solution:** Verify your Flutterwave account is KYC-approved and live mode is enabled
+
+**Problem:** Webhook not firing
+**Solution:** Check webhook URL is HTTPS and matches your production domain
+
+**Problem:** Emails don't match
+**Solution:** Ensure users sign up with the same email they use for payment
+
+For more help, see [Troubleshooting Guide](docs/troubleshooting.md)
+
 ## ✨ Features
 
 - 🔐 **Authentication** - Email/password + OAuth (Google) via Supabase
@@ -18,7 +136,7 @@ A production-ready SaaS starter template with subscription billing powered by Fl
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Authentication**: Supabase Auth
@@ -38,7 +156,7 @@ A production-ready SaaS starter template with subscription billing powered by Fl
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/flutterwave-supabase-starter.git
+git clone https://github.com/m1rak/flutterwave-supabase-starter.git
 cd flutterwave-supabase-starter
 ```
 
@@ -62,6 +180,7 @@ SUPABASE_SECRET_KEY=your_secret_key
 # Flutterwave
 NEXT_PUBLIC_FLW_PUBLIC_KEY=your_test_public_key
 FLW_SECRET_KEY=your_test_secret_key
+FLW_ENCRYPTION_KEY=your_test_encryption_key
 FLW_SECRET_HASH=your_webhook_secret
 ```
 
@@ -118,9 +237,7 @@ Contributions welcome! Please open an issue or PR.
 
 ## 💬 Support
 
-- [Mail]()
+- [Mail](abdullahiismail1105@gmail.com)
 
-
----
-
+```
 Made with ❤️ by M1RAK

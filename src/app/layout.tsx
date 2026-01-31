@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 import { DM_Sans } from 'next/font/google'
-import "./globals.css";
-import Navigation from "@/components/Navigation";
+import './globals.css'
+import Navigation from '@/components/Navigation'
+import SetupBanner from '@/components/SetupBanner'
 
 const dmSans = DM_Sans({
 	variable: '--font-dm-sans',
@@ -16,19 +17,21 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+	children
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-  return (
-    <html lang="en">
-      <meta name="google-site-verification" content="74FJ-FQ0yrSHQfjXyj2jsUXaV2haLwPwWLwKG2H2UHc" />
-      <body
-        className={`${dmSans.variable} antialiased`}
-      >
-        <Navigation />
-        {children}
-      </body>
-    </html>
-  );
+	return (
+		<html lang='en'>
+			<meta
+				name='google-site-verification'
+				content='74FJ-FQ0yrSHQfjXyj2jsUXaV2haLwPwWLwKG2H2UHc'
+			/>
+			<body className={`${dmSans.variable} antialiased`}>
+				<Navigation />
+				<SetupBanner />
+				{children}
+			</body>
+		</html>
+	)
 }
