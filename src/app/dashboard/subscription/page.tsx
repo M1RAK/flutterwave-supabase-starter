@@ -65,7 +65,7 @@ export default function SubscriptionDashboard() {
 
 				// Fetch transaction history
 				const txResponse = await fetch(
-					`/api/transactions?email=ravesb_90e1ed81a988f528b017_${authUser.email}`
+					`/api/transactions?email=${authUser.email}`
 				)
 				const txData = await txResponse.json()
 				if (txData.success) {
