@@ -83,12 +83,8 @@ export default function SubscriptionPage() {
 		public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
 		tx_ref: Date.now().toString(),
 		amount: plan.amount,
-<<<<<<< HEAD
-		currency: plan.currency || 'NGN',
-=======
-		currency: 'NGN',
->>>>>>> a93456b (updated the payments options)
-		payment_options: 'card,banktransfer,account,ussd,opay',
+		currency: plan.currency,
+		payment_options: 'card,googlepay,applepay',
 		payment_plan: plan.id, // Flutterwave plan ID
 		customer: {
 			email: user?.email || '',
