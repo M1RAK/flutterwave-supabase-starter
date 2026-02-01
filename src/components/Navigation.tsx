@@ -106,7 +106,7 @@ export default function Navigation() {
 
 								<button
 									onClick={handleSignOut}
-									className='px-4 py-2 text-sm font-medium bg-amber-500 border-8 text-gray-700 hover:text-gray-900 transition-colors'>
+									className='px-4 py-2 text-sm font-medium bg-amber-500 rounded-lg text-gray-700 hover:text-gray-900 transition-colors'>
 									Sign Out
 								</button>
 							</div>
