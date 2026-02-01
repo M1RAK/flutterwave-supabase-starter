@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
-import { extractRealEmail } from '@/lib/utils'
+import { extractRealEmail } from '@/lib/utils/utils'
 
 export async function POST(request: Request) {
 	try {

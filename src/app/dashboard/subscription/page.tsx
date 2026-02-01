@@ -7,6 +7,7 @@ import type {
 	FlutterwavePlan,
 	FlutterwaveTransaction
 } from '@/types/database'
+import { getFlutterwaveEmailFromSubscription } from '@/lib/utils/email'
 
 function extractRealEmail(flutterwaveEmail: string): string {
 	const match = flutterwaveEmail.match(/_([^_@]+@.+)$/)
@@ -64,9 +65,27 @@ export default function SubscriptionDashboard() {
 				}
 
 				// Fetch transaction history
-				const txResponse = await fetch(
-					`/api/transactions?email=${authUser.email}`
+				// In test mode: Uses customer_email (with prefix)
+				// In live mode: Uses customer_email (real email)
+				const flutterwaveEmail = getFlutterwaveEmailFromSubscription(
+					sub,
+					authUser.email!
 				)
+
+				console.log(
+					'📧 Subscription customer_email:',
+					sub.customer_email
+				)
+				console.log('📧 Auth user email:', authUser.email)
+				console.log('📧 Using for Flutterwave API:', flutterwaveEmail)
+
+				// Fetch transaction history from Flutterwave
+				const txResponse = await fetch(
+					`/api/transactions?email=${encodeURIComponent(
+						flutterwaveEmail
+					)}`
+				)
+
 				const txData = await txResponse.json()
 				if (txData.success) {
 					setTransactions(txData.transactions)

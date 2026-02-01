@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
-import { extractRealEmail } from '@/lib/utils'
+import { extractRealEmail } from '@/lib/utils/email'
 
 export async function POST(request: Request) {
 	try {
@@ -39,17 +39,16 @@ export async function POST(request: Request) {
 async function handleChargeCompleted(data: any) {
 	console.log('💳 Processing charge:', data.id)
 
+	// Extract real email for user lookup
 	const realEmail = extractRealEmail(data.customer.email)
-	console.log('📧 Original email:', data.customer.email)
-	console.log('📧 Extracted email:', realEmail)
+	console.log('📧 Original email (Flutterwave):', data.customer.email)
+	console.log('📧 Extracted email (real):', realEmail)
 
+	// Calculate next billing period
 	const startDate = new Date()
 	const endDate = new Date()
 
-	// ✅ FIX: Get interval from meta or default to monthly
-	const interval = data.meta?.payment_plan_interval || 'monthly'
-	console.log('📅 Billing interval:', interval)
-
+	const interval = data.payment_plan?.interval || 'monthly'
 	switch (interval) {
 		case 'daily':
 			endDate.setDate(endDate.getDate() + 1)
@@ -65,6 +64,7 @@ async function handleChargeCompleted(data: any) {
 			break
 	}
 
+	// Find user by REAL email
 	const { data: user } = await supabaseAdmin
 		.from('users')
 		.select('id')
@@ -79,14 +79,15 @@ async function handleChargeCompleted(data: any) {
 	const planId = data.plan?.toString() || ''
 	console.log('📋 Plan ID:', planId)
 
+	// UPSERT subscription
 	const { data: subscription, error } = await supabaseAdmin
 		.from('subscriptions')
 		.upsert(
 			{
 				flutterwave_transaction_id: data.id.toString(),
-				flutterwave_plan_id: planId, // ✅ Fixed!
+				flutterwave_plan_id: planId,
 				flutterwave_customer_id: data.customer.id?.toString(),
-				customer_email: realEmail.toLowerCase(),
+				customer_email: data.customer.email,
 				user_id: user?.id || null,
 				status: data.status === 'successful' ? 'active' : 'failed',
 				current_period_start: startDate.toISOString(),
@@ -116,8 +117,6 @@ async function handleChargeCompleted(data: any) {
 
 async function handleSubscriptionCancelled(data: any) {
 	console.log('🚫 Cancelling subscription:', data.id)
-
-	// ✅ FIX: Update by transaction ID, not subscription ID
 	await supabaseAdmin
 		.from('subscriptions')
 		.update({
