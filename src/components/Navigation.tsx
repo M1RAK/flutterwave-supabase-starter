@@ -3,28 +3,33 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function Navigation() {
 	const pathname = usePathname()
 	const router = useRouter()
 	const [user, setUser] = useState<any>(null)
-	const supabase = createClient()
+	const supabase = useMemo(() => createClient(), [])
 
-	useEffect(() => {
-		const getUser = async () => {
-			const {
-				data: { user }
-			} = await supabase.auth.getUser()
-			setUser(user)
-		}
-		getUser()
-	}, [])
+useEffect(() => {
+	// Get initial session
+	supabase.auth.getUser().then(({ data }) => {
+		setUser(data.user ?? null)
+	})
+
+	// React to auth changes
+	const {
+		data: { subscription }
+	} = supabase.auth.onAuthStateChange((_event, session) => {
+		setUser(session?.user ?? null)
+	})
+
+	return () => subscription.unsubscribe()
+}, [supabase])
 
 	const handleSignOut = async () => {
 		await supabase.auth.signOut()
-		router.push('/')
-		router.refresh()
+		router.replace('/')
 	}
 
 	return (
