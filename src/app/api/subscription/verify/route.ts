@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
-import { extractRealEmail } from '@/lib/utils/email'
 
 export async function POST(request: Request) {
 	try {
-		const { transactionId, planId, planToken } = await request.json()
+		const { transactionId, planId } = await request.json()
 
 		console.log('🔍 Verifying transaction:', transactionId)
 
-		// Verify payment with Flutterwave
 		const response = await fetch(
 			`https://api.flutterwave.com/v3/transactions/${transactionId}/verify`,
 			{
@@ -25,18 +23,12 @@ export async function POST(request: Request) {
 			const paymentData = data.data
 			console.log('✅ Payment verified:', paymentData.id)
 
-			const realEmail = extractRealEmail(paymentData.customer.email)
-			console.log('📧 Original email:', paymentData.customer.email)
-			console.log('📧 Extracted email:', realEmail)
+			// ✅ Get userId from meta (transaction verify DOES include meta)
+			const userId = paymentData.meta?.userId
+			console.log('👤 User ID from meta:', userId)
 
-			const { data: user } = await supabaseAdmin
-				.from('users')
-				.select('id')
-				.eq('email', realEmail.toLowerCase())
-				.maybeSingle()
-
-			if (!user) {
-				console.warn('⚠️ User not found for email:', realEmail)
+			if (!userId) {
+				console.warn('⚠️ No userId in transaction metadata')
 				return NextResponse.json({
 					success: true,
 					message:
@@ -44,14 +36,13 @@ export async function POST(request: Request) {
 				})
 			}
 
-			console.log('👤 User found:', user.id)
+			console.log('👤 User ID confirmed:', userId)
 
+			// Calculate subscription period
 			const startDate = new Date()
 			const endDate = new Date()
 
-			// ✅ FIX: Get interval from meta or default
-			const planInterval =
-				paymentData.meta?.payment_plan_interval || 'monthly'
+			const planInterval = paymentData.payment_plan?.interval || 'monthly'
 			console.log('📅 Billing interval:', planInterval)
 
 			switch (planInterval) {
@@ -69,21 +60,21 @@ export async function POST(request: Request) {
 					break
 			}
 
-			// ✅ FIX: Use paymentData.plan (which is the number 228926)
 			const resolvedPlanId =
 				paymentData.plan?.toString() || planId.toString()
-			console.log('📋 Plan ID from payment:', resolvedPlanId)
+			console.log('📋 Plan ID:', resolvedPlanId)
 
+			// ✅ Upsert with userId
 			const { data: subscription, error } = await supabaseAdmin
 				.from('subscriptions')
 				.upsert(
 					{
 						flutterwave_transaction_id: paymentData.id.toString(),
-						flutterwave_plan_id: resolvedPlanId, // ✅ Fixed!
+						flutterwave_plan_id: resolvedPlanId,
 						flutterwave_customer_id:
 							paymentData.customer.id?.toString(),
-						customer_email: realEmail.toLowerCase(),
-						user_id: user.id,
+						customer_email: paymentData.customer.email,
+						user_id: userId, // ✅ Direct userId
 						status: 'active',
 						current_period_start: startDate.toISOString(),
 						current_period_end: endDate.toISOString(),

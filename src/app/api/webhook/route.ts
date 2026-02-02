@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
-import { extractRealEmail } from '@/lib/utils/email'
 
 export async function POST(request: Request) {
 	try {
@@ -36,19 +35,24 @@ export async function POST(request: Request) {
 	}
 }
 
-async function handleChargeCompleted(data: any) {
+async function handleChargeCompleted(event: any) {
+	const data = event.data
+	const metadata = event.meta_data
+
 	console.log('💳 Processing charge:', data.id)
+	console.log('📦 Metadata:', metadata)
 
-	// Extract real email for user lookup
-	const realEmail = extractRealEmail(data.customer.email)
-	console.log('📧 Original email (Flutterwave):', data.customer.email)
-	console.log('📧 Extracted email (real):', realEmail)
+	// ✅ PRIMARY: Get userId from metadata
+	const userId = metadata?.userId
+	console.log('👤 User ID from metadata:', userId)
 
-	// Calculate next billing period
+	// Calculate billing period
 	const startDate = new Date()
 	const endDate = new Date()
 
 	const interval = data.payment_plan?.interval || 'monthly'
+	console.log('📅 Billing interval:', interval)
+
 	switch (interval) {
 		case 'daily':
 			endDate.setDate(endDate.getDate() + 1)
@@ -64,22 +68,11 @@ async function handleChargeCompleted(data: any) {
 			break
 	}
 
-	// Find user by REAL email
-	const { data: user } = await supabaseAdmin
-		.from('users')
-		.select('id')
-		.eq('email', realEmail.toLowerCase())
-		.maybeSingle()
-
-	console.log(
-		'👤 User lookup result:',
-		user ? `Found: ${user.id}` : 'Not found'
-	)
-
+	// Get plan ID
 	const planId = data.plan?.toString() || ''
 	console.log('📋 Plan ID:', planId)
 
-	// UPSERT subscription
+	// ✅ Upsert subscription with userId
 	const { data: subscription, error } = await supabaseAdmin
 		.from('subscriptions')
 		.upsert(
@@ -87,8 +80,8 @@ async function handleChargeCompleted(data: any) {
 				flutterwave_transaction_id: data.id.toString(),
 				flutterwave_plan_id: planId,
 				flutterwave_customer_id: data.customer.id?.toString(),
-				customer_email: data.customer.email,
-				user_id: user?.id || null,
+				customer_email: data.customer.email, // Store Flutterwave's email
+				user_id: userId || null, // ✅ Direct userId from metadata
 				status: data.status === 'successful' ? 'active' : 'failed',
 				current_period_start: startDate.toISOString(),
 				current_period_end: endDate.toISOString()
@@ -106,17 +99,20 @@ async function handleChargeCompleted(data: any) {
 	}
 
 	console.log(
-		'✅ Subscription upserted:',
+		'✅ Subscription created:',
 		subscription.id,
 		'User:',
-		user?.id,
+		userId,
 		'Plan:',
 		planId
 	)
 }
 
-async function handleSubscriptionCancelled(data: any) {
+async function handleSubscriptionCancelled(event: any) {
+	const data = event.data
+
 	console.log('🚫 Cancelling subscription:', data.id)
+
 	await supabaseAdmin
 		.from('subscriptions')
 		.update({

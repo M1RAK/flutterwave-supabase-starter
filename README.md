@@ -847,16 +847,31 @@ The app comes configured for test mode by default.
 - Find your test transaction
 - Status should be "Successful"
 
-### **Email Prefix in Test Mode**
+### ⚠️ Demo Mode Limitation
 
-Flutterwave adds a prefix to emails in sandbox:
+#### Email Handling in Test Mode
 
+**In test/sandbox mode**, Flutterwave replaces customer emails with your account email. This is normal Flutterwave behavior.
+
+**Example:**
 ```
-Input:  user@example.com
-Output: ravesb_90e1ed81a988f528b017_user@example.com
+You sign up with: user@example.com
+Flutterwave returns: ravesb_xxx_your_flutterwave_account@gmail.com
 ```
 
-**Our code automatically handles this** with `extractRealEmail()` function.
+**Impact:**
+- Subscriptions may not automatically link to the correct user
+- Transaction history might not appear in dashboard
+
+**Workaround for Demo:**
+When testing the demo:
+1. Sign up with the email from your Flutterwave account: `joeschmoe15@gmail.com`
+2. OR manually link subscriptions in Supabase after payment
+
+**In Production (Live Mode):**
+✅ This limitation does NOT exist
+✅ Real customer emails are used
+✅ Everything works perfectly
 
 ---
 

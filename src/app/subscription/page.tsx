@@ -95,7 +95,9 @@ export default function SubscriptionPage() {
 			description: `${plan.interval} subscription`
 		},
 		meta: {
-			userId: user?.id
+			userId: user?.id,
+			user_email: user?.email,
+			plan_id: plan.id.toString()
 		}
 	})
 
