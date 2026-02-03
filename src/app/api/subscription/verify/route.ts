@@ -64,24 +64,24 @@ export async function POST(request: Request) {
 				paymentData.plan?.toString() || planId.toString()
 			console.log('📋 Plan ID:', resolvedPlanId)
 
-			// ✅ Upsert with userId
 			const { data: subscription, error } = await supabaseAdmin
 				.from('subscriptions')
 				.upsert(
 					{
+						user_id: userId, // ✅ Conflict key
 						flutterwave_transaction_id: paymentData.id.toString(),
 						flutterwave_plan_id: resolvedPlanId,
 						flutterwave_customer_id:
 							paymentData.customer.id?.toString(),
 						customer_email: paymentData.customer.email,
-						user_id: userId, // ✅ Direct userId
 						status: 'active',
 						current_period_start: startDate.toISOString(),
 						current_period_end: endDate.toISOString(),
 						cancel_at_period_end: false
 					},
 					{
-						onConflict: 'flutterwave_transaction_id'
+						onConflict: 'user_id', // ✅ One per user
+						ignoreDuplicates: false
 					}
 				)
 				.select()

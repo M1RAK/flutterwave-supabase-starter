@@ -10,7 +10,7 @@ export interface Subscription {
 	id: string
 	user_id?: string
 	customer_email: string
-	flutterwave_transaction_id: string 
+	flutterwave_transaction_id: string
 	flutterwave_plan_id: string
 	flutterwave_customer_id?: string
 	status: 'pending' | 'active' | 'cancelled' | 'expired' | 'failed'
@@ -43,5 +43,12 @@ export interface FlutterwaveTransaction {
 	customer: {
 		email: string
 		name: string
+	}
+	meta?: {
+		__CheckoutInitAddress: string
+		__FingerprintConfidenceScore: string
+		userId: string
+		user_email: string
+		plan_id: string
 	}
 }

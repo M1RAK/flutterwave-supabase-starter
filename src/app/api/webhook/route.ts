@@ -36,76 +36,66 @@ export async function POST(request: Request) {
 }
 
 async function handleChargeCompleted(event: any) {
-	const data = event.data
-	const metadata = event.meta_data
+  const data = event.data;
+  const metadata = event.meta_data;
 
-	console.log('💳 Processing charge:', data.id)
-	console.log('📦 Metadata:', metadata)
+  console.log('💳 Processing charge:', data.id);
 
-	// ✅ PRIMARY: Get userId from metadata
-	const userId = metadata?.userId
-	console.log('👤 User ID from metadata:', userId)
+  const userId = metadata?.userId;
+  console.log('👤 User ID from metadata:', userId);
 
-	// Calculate billing period
-	const startDate = new Date()
-	const endDate = new Date()
+  if (!userId) {
+    console.error('❌ No userId in metadata - cannot link subscription');
+    return;
+  }
 
-	const interval = data.payment_plan?.interval || 'monthly'
-	console.log('📅 Billing interval:', interval)
+  const startDate = new Date();
+  const endDate = new Date();
 
-	switch (interval) {
-		case 'daily':
-			endDate.setDate(endDate.getDate() + 1)
-			break
-		case 'weekly':
-			endDate.setDate(endDate.getDate() + 7)
-			break
-		case 'monthly':
-			endDate.setMonth(endDate.getMonth() + 1)
-			break
-		case 'yearly':
-			endDate.setFullYear(endDate.getFullYear() + 1)
-			break
-	}
+  const interval = data.payment_plan?.interval || 'monthly';
 
-	// Get plan ID
-	const planId = data.plan?.toString() || ''
-	console.log('📋 Plan ID:', planId)
+  switch (interval) {
+    case 'daily':
+      endDate.setDate(endDate.getDate() + 1);
+      break;
+    case 'weekly':
+      endDate.setDate(endDate.getDate() + 7);
+      break;
+    case 'monthly':
+      endDate.setMonth(endDate.getMonth() + 1);
+      break;
+    case 'yearly':
+      endDate.setFullYear(endDate.getFullYear() + 1);
+      break;
+  }
 
-	// ✅ Upsert subscription with userId
-	const { data: subscription, error } = await supabaseAdmin
-		.from('subscriptions')
-		.upsert(
-			{
-				flutterwave_transaction_id: data.id.toString(),
-				flutterwave_plan_id: planId,
-				flutterwave_customer_id: data.customer.id?.toString(),
-				customer_email: data.customer.email, // Store Flutterwave's email
-				user_id: userId || null, // ✅ Direct userId from metadata
-				status: data.status === 'successful' ? 'active' : 'failed',
-				current_period_start: startDate.toISOString(),
-				current_period_end: endDate.toISOString()
-			},
-			{
-				onConflict: 'flutterwave_transaction_id'
-			}
-		)
-		.select()
-		.single()
+  const planId = data.plan?.toString() || '';
 
-	if (error) {
-		console.error('❌ Error upserting subscription:', error)
-		return
-	}
+  const { data: subscription, error } = await supabaseAdmin
+    .from('subscriptions')
+    .upsert({
+      user_id: userId,
+      flutterwave_transaction_id: data.id.toString(),
+      flutterwave_plan_id: planId,
+      flutterwave_customer_id: data.customer.id?.toString(),
+      customer_email: data.customer.email,
+      status: data.status === 'successful' ? 'active' : 'failed',
+      current_period_start: startDate.toISOString(),
+      current_period_end: endDate.toISOString(),
+      cancel_at_period_end: false,
+    }, {
+      onConflict: 'user_id',
+      ignoreDuplicates: false 
+    })
+    .select()
+    .single();
 
-	console.log(
-		'✅ Subscription created:',
-		subscription.id,
-		'User:',
-		userId,
-		'Plan:',
-		planId
-	)
+  if (error) {
+    console.error('❌ Error upserting subscription:', error);
+    return;
+  }
+
+  console.log('✅ Subscription upserted for user:', userId, 'Plan:', planId);
 }
 
 async function handleSubscriptionCancelled(event: any) {

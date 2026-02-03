@@ -70,18 +70,18 @@ useEffect(() => {
 									Home
 								</Link>
 								<Link
-									href='/subscription'
+									href='/plans'
 									className={`text-sm font-medium transition-colors ${
-										pathname === '/subscription'
+										pathname === '/plans'
 											? 'text-flutterwave-orange'
 											: 'text-gray-600 hover:text-flutterwave-dark'
 									}`}>
 									Plans
 								</Link>
 								<Link
-									href='/dashboard/subscription'
+									href='/dashboard'
 									className={`text-sm font-medium transition-colors ${
-										pathname === '/dashboard/subscription'
+										pathname === '/dashboard'
 											? 'text-flutterwave-orange'
 											: 'text-gray-600 hover:text-flutterwave-dark'
 									}`}>
@@ -117,7 +117,7 @@ useEffect(() => {
 							</div>
 						) : (
 							<Link
-								href='/auth/signin'
+								href='/auth/sign-in'
 								className='px-4 py-2 text-sm font-medium text-white bg-flutterwave-orange hover:bg-orange-600 rounded-lg transition-colors'>
 								Sign In
 							</Link>

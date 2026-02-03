@@ -19,12 +19,12 @@ export default function Home() {
 					</p>
 					<div className='flex flex-col sm:flex-row gap-4 justify-center'>
 						<Link
-							href='/auth/signin'
+							href='/auth/sign-in'
 							className='px-8 py-4 bg-flutterwave-orange text-white font-semibold rounded-lg hover:bg-orange-600 transition-all transform hover:scale-105'>
 							Get Started Free
 						</Link>
 						<Link
-							href='/subscription'
+							href='/plans'
 							className='px-8 py-4 bg-white text-flutterwave-dark font-semibold rounded-lg border-2 border-gray-200 hover:border-flutterwave-orange transition-all'>
 							View Plans
 						</Link>

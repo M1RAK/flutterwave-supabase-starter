@@ -193,7 +193,6 @@ export default function SubscriptionPage() {
 						</li>
 					</ol>
 				</nav>
-
 				<h1 className='text-4xl font-bold mb-4 text-flutterwave-dark'>
 					Choose Your Plan
 				</h1>
@@ -203,31 +202,55 @@ export default function SubscriptionPage() {
 
 				{/* Current Subscription Status */}
 				{currentSubscription && currentPlanDetails && (
-					<div className='mb-8 p-6 bg-green-50 border border-green-200 rounded-lg'>
-						<h2 className='text-xl font-semibold mb-2 text-green-800'>
-							Active Subscription
-						</h2>
-						<p className='text-green-700'>
+					<div className='mb-8 p-6 bg-linear-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-xl shadow-sm'>
+						<div className='flex items-center gap-3 mb-3'>
+							<div className='w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center'>
+								<svg
+									className='w-6 h-6 text-white'
+									fill='none'
+									viewBox='0 0 24 24'
+									stroke='currentColor'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										strokeWidth={2}
+										d='M5 13l4 4L19 7'
+									/>
+								</svg>
+							</div>
+							<h2 className='text-2xl font-bold text-orange-900'>
+								Active Subscription
+							</h2>
+						</div>
+						<p className='text-orange-800 text-lg mb-2'>
 							You're currently on the{' '}
-							<strong>{currentPlanDetails.name}</strong> plan
+							<strong className='text-orange-900'>
+								{currentPlanDetails.name}
+							</strong>{' '}
+							plan
 						</p>
-						<p className='text-sm text-green-600 mt-2'>
-							Status:{' '}
-							<span className='capitalize'>
-								{currentSubscription.status}
-							</span>
-						</p>
-						{currentSubscription.current_period_end && (
-							<p className='text-sm text-green-600'>
-								Next billing:{' '}
-								{new Date(
-									currentSubscription.current_period_end
-								).toLocaleDateString()}
-							</p>
-						)}
+						<div className='flex gap-4 mt-4 text-sm'>
+							<div className='px-4 py-2 bg-white rounded-lg border border-orange-200'>
+								<span className='text-gray-600'>Status: </span>
+								<span className='font-semibold text-orange-700 capitalize'>
+									{currentSubscription.status}
+								</span>
+							</div>
+							{currentSubscription.current_period_end && (
+								<div className='px-4 py-2 bg-white rounded-lg border border-orange-200'>
+									<span className='text-gray-600'>
+										Next billing:{' '}
+									</span>
+									<span className='font-semibold text-orange-700'>
+										{new Date(
+											currentSubscription.current_period_end
+										).toLocaleDateString()}
+									</span>
+								</div>
+							)}
+						</div>
 					</div>
 				)}
-
 				{/* Available Plans */}
 				<div className='grid md:grid-cols-2 gap-6'>
 					{plans.map((plan) => {
@@ -238,41 +261,50 @@ export default function SubscriptionPage() {
 						return (
 							<div
 								key={plan.id}
-								className={`border rounded-lg p-6 hover:shadow-xl transition-shadow ${
+								className={`relative border-2 rounded-xl p-8 transition-all duration-300 ${
 									isCurrentPlan
-										? 'border-blue-500 bg-blue-50'
-										: ''
+										? 'border-orange-500 bg-linear-to-br from-orange-50 to-yellow-50 shadow-lg scale-105'
+										: 'border-gray-200 bg-white hover:border-orange-300 hover:shadow-xl'
 								}`}>
-								<h3 className='text-2xl font-bold mb-2'>
-									{plan.name}
-								</h3>
+								{isCurrentPlan && (
+									<div className='absolute -top-3 left-1/2 transform -translate-x-1/2'>
+										<span className='px-4 py-1 bg-orange-500 text-white text-sm font-semibold rounded-full shadow-md'>
+											Current Plan
+										</span>
+									</div>
+								)}
 
-								<div className='mb-6'>
-									<span className='text-4xl font-bold'>
-										{plan.currency === 'NGN'
-											? '₦'
-											: plan.currency === 'USD'
-											? '$'
-											: plan.currency}
-										{plan.amount.toLocaleString()}
-									</span>
-									<span className='text-gray-600'>
-										/{plan.interval}
-									</span>
+								<div className='text-center mb-6'>
+									<h3 className='text-2xl font-bold text-gray-900 mb-2'>
+										{plan.name}
+									</h3>
+									<div className='flex items-baseline justify-center gap-1'>
+										<span className='text-5xl font-bold text-orange-600'>
+											{plan.currency === 'NGN'
+												? '₦'
+												: plan.currency === 'USD'
+												? '$'
+												: plan.currency}
+											{plan.amount.toLocaleString()}
+										</span>
+										<span className='text-xl text-gray-600'>
+											/{plan.interval}
+										</span>
+									</div>
 								</div>
 
 								{isCurrentPlan ? (
 									<button
 										disabled
-										className='w-full bg-gray-300 text-gray-600 py-3 rounded-lg cursor-not-allowed'>
-										Current Plan
+										className='w-full bg-gray-300 text-gray-600 py-4 rounded-xl font-semibold cursor-not-allowed opacity-60'>
+										✓ Active Plan
 									</button>
 								) : (
 									<button
 										onClick={() => handleSubscribe(plan)}
-										className='w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors'>
+										className='w-full bg-linear-to-r from-orange-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg'>
 										{currentSubscription
-											? 'Switch Plan'
+											? 'Switch to This Plan'
 											: 'Subscribe Now'}
 									</button>
 								)}
