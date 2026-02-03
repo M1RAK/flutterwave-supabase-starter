@@ -47,7 +47,6 @@ Built with **Next.js 16**, **TypeScript**, **Tailwind CSS v4**, Supabase, and Fl
 
 ### 💳 **Subscription Billing (Flutterwave)**
 - ✅ Recurring payment plans (monthly/yearly)
-- ✅ Multiple payment methods (cards, bank transfer, USSD, mobile money — configurable)
 - ✅ Automatic subscription renewal
 - ✅ Webhook-driven subscription lifecycle management
 - ✅ Sandbox mode for testing + Production mode for live payments

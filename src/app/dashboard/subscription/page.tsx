@@ -70,6 +70,8 @@ export default function SubscriptionDashboard() {
 				)
 				const txData = await txResponse.json()
 
+				console.log('TxData: ', txData)
+
 				if (txData.success) {
 					setTransactions(txData.transactions)
 				}
