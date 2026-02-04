@@ -13,7 +13,11 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
 	title: 'Flutterwave × Supabase SaaS Starter',
 	description:
-		'Production-ready subscription billing with Flutterwave and Supabase'
+		'Production-ready subscription billing with Flutterwave and Supabase',
+	icons: {
+		icon: '/favicon.ico',
+		apple: '/apple-touch-icon.png'
+	}
 }
 
 export default function RootLayout({

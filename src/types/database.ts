@@ -13,6 +13,7 @@ export interface Subscription {
 	flutterwave_transaction_id: string
 	flutterwave_plan_id: string
 	flutterwave_customer_id?: string
+	flutterwave_subscription_id?: string
 	status: 'pending' | 'active' | 'cancelled' | 'expired' | 'failed'
 	current_period_start?: string
 	current_period_end?: string

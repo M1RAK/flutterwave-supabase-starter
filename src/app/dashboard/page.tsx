@@ -189,8 +189,7 @@ export default function SubscriptionDashboard() {
 						</div>
 					</div>
 				</div>
-				// Dashboard Subscription Component // Streamlined design
-				without sidebar - all essential info in main content area
+
 				{subscription ? (
 					<div className='max-w-5xl mx-auto space-y-6'>
 						{/* Current Plan Card */}
@@ -204,20 +203,6 @@ export default function SubscriptionDashboard() {
 										<p className='opacity-90 text-lg'>
 											Your active subscription details
 										</p>
-									</div>
-									<div className='w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center'>
-										<svg
-											className='w-8 h-8'
-											fill='none'
-											viewBox='0 0 24 24'
-											stroke='currentColor'>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												strokeWidth={2}
-												d='M5 13l4 4L19 7'
-											/>
-										</svg>
 									</div>
 								</div>
 							</div>

@@ -79,27 +79,27 @@ export default function SubscriptionPage() {
 	}
 
 	// ✅ FIX: Create config function that takes plan as parameter
-	const createPaymentConfig = (plan: FlutterwavePlan) => ({
-		public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
-		tx_ref: Date.now().toString(),
-		amount: plan.amount,
-		currency: plan.currency,
-		payment_options: 'card,googlepay,applepay',
-		payment_plan: plan.id, // Flutterwave plan ID
-		customer: {
-			email: user?.email || '',
-			name: user?.user_metadata?.full_name || user?.email || ''
-		},
-		customizations: {
-			title: `Subscribe to ${plan.name}`,
-			description: `${plan.interval} subscription`
-		},
-		meta: {
-			userId: user?.id,
-			user_email: user?.email,
-			plan_id: plan.id.toString()
-		}
-	})
+  const createPaymentConfig = (plan: FlutterwavePlan) => ({
+    public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
+    tx_ref: `SUB-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+    amount: plan.amount,
+    currency: plan.currency,
+    payment_options: 'card,googlepay,applepay',
+    payment_plan: plan.id, // Flutterwave plan ID
+    customer: {
+      email: user?.email || '',
+      name: user?.user_metadata?.full_name || user?.email || ''
+    },
+    customizations: {
+      title: `Subscribe to ${plan.name}`,
+      description: `${plan.interval} subscription`
+    },
+    meta: {
+      userId: user?.id,
+      user_email: user?.email,
+      plan_id: plan.id.toString()
+    }
+  })
 
 	const handleSubscribe = async (plan: FlutterwavePlan) => {
 		if (!user) {
