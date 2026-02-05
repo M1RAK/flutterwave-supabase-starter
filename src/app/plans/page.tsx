@@ -84,7 +84,7 @@ export default function SubscriptionPage() {
     tx_ref: `SUB-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     amount: plan.amount,
     currency: plan.currency,
-    payment_options: 'card,googlepay,applepay',
+    payment_options: 'card',
     payment_plan: plan.id, // Flutterwave plan ID
     customer: {
       email: user?.email || '',
