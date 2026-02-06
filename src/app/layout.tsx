@@ -11,7 +11,7 @@ const bricolage = Bricolage_Grotesque({
 })
 
 export const metadata: Metadata = {
-	title: 'Flutterwave × Supabase SaaS Starter',
+	title: 'Flutterwave × Supabase Subscription Starter',
 	description:
 		'Production-ready subscription billing with Flutterwave and Supabase',
 	icons: {

@@ -32,7 +32,7 @@ export default function Navigation() {
 								F
 							</span>
 						</div>
-						<span className='font-bold text-xl text-flutterwave-dark sm:hidden'>
+						<span className='font-bold text-xl text-flutterwave-dark hidden sm:block'>
 							FW × Supabase
 						</span>
 						{process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY?.includes(

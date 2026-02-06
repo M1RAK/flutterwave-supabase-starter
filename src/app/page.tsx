@@ -4,15 +4,15 @@ export default function Home() {
 	return (
 		<div className='min-h-screen bg-linear-to-b from-white to-orange-50'>
 			{/* Hero Section */}
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16'>
+			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-12 sm:pb-16'>
 				<div className='text-center'>
-					<h1 className='text-5xl md:text-6xl font-bold text-flutterwave-dark mb-6'>
+					<h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-flutterwave-dark mb-6'>
 						Subscription Billing Made{' '}
 						<span className='text-transparent bg-clip-text bg-linear-to-r from-flutterwave-orange to-orange-600'>
 							Simple
 						</span>
 					</h1>
-					<p className='text-xl text-gray-600 mb-8 max-w-2xl mx-auto'>
+					<p className='text-base sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto'>
 						Launch your SaaS in minutes with Flutterwave payments
 						and Supabase backend. Production-ready authentication,
 						subscription billing, and user management.
@@ -33,9 +33,9 @@ export default function Home() {
 			</div>
 
 			{/* Features Section */}
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16'>
 				<div className='text-center mb-12'>
-					<h2 className='text-3xl font-bold text-flutterwave-dark mb-4'>
+					<h2 className='text-2xl sm:text-3xl font-bold text-flutterwave-dark mb-4'>
 						Everything You Need to Launch
 					</h2>
 					<p className='text-gray-600'>
@@ -203,10 +203,10 @@ export default function Home() {
 			</div>
 
 			{/* Tech Stack Section */}
-			<div className='bg-white py-16'>
+			<div className='bg-white py-12 sm:py-16'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 					<div className='text-center mb-12'>
-						<h2 className='text-3xl font-bold text-flutterwave-dark mb-4'>
+						<h2 className='text-2xl sm:text-3xl font-bold text-flutterwave-dark mb-4'>
 							Powered by Industry Leaders
 						</h2>
 						<p className='text-gray-600'>
@@ -214,9 +214,9 @@ export default function Home() {
 						</p>
 					</div>
 
-					<div className='grid grid-cols-2 md:grid-cols-4 gap-8 items-center'>
+					<div className='grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 items-center'>
 						<div className='text-center'>
-							<div className='text-4xl font-bold text-flutterwave-orange mb-2'>
+							<div className='text-3xl sm:text-4xl font-bold text-flutterwave-orange mb-2'>
 								Flutterwave
 							</div>
 							<p className='text-sm text-gray-600'>
@@ -224,7 +224,7 @@ export default function Home() {
 							</p>
 						</div>
 						<div className='text-center'>
-							<div className='text-4xl font-bold text-green-600 mb-2'>
+							<div className='text-3xl sm:text-4xl font-bold text-green-600 mb-2'>
 								Supabase
 							</div>
 							<p className='text-sm text-gray-600'>
@@ -232,7 +232,7 @@ export default function Home() {
 							</p>
 						</div>
 						<div className='text-center'>
-							<div className='text-4xl font-bold text-black mb-2'>
+							<div className='text-3xl sm:text-4xl font-bold text-black mb-2'>
 								Next.js
 							</div>
 							<p className='text-sm text-gray-600'>
@@ -240,7 +240,7 @@ export default function Home() {
 							</p>
 						</div>
 						<div className='text-center'>
-							<div className='text-4xl font-bold text-blue-600 mb-2'>
+							<div className='text-3xl sm:text-4xl font-bold text-blue-600 mb-2'>
 								TypeScript
 							</div>
 							<p className='text-sm text-gray-600'>Type Safety</p>
@@ -250,12 +250,12 @@ export default function Home() {
 			</div>
 
 			{/* CTA Section */}
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-				<div className='bg-linear-to-r from-flutterwave-orange to-orange-600 rounded-2xl p-12 text-center text-white'>
-					<h2 className='text-3xl font-bold mb-4'>
+			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16'>
+				<div className='bg-linear-to-r from-flutterwave-orange to-orange-600 rounded-2xl p-6 sm:p-10 lg:p-12 text-center text-white'>
+					<h2 className='text-2xl sm:text-3xl font-bold mb-4'>
 						Ready to Launch Your SaaS?
 					</h2>
-					<p className='text-xl mb-8 opacity-90'>
+					<p className='text-base sm:text-xl mb-8 opacity-90'>
 						Get started in minutes with our production-ready
 						template
 					</p>
@@ -279,12 +279,11 @@ export default function Home() {
 			{/* Footer */}
 			<footer className='border-t py-8'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-					<div className='flex flex-col md:flex-row justify-between items-center'>
+					<div className='flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0'>
 						<p className='text-gray-600 text-sm'>
-							© 2026 Flutterwave × Supabase SaaS Starter. MIT
-							Licensed.
+							© 2026 Flutterwave × Supabase SaaS Starter.
 						</p>
-						<div className='flex space-x-6 mt-4 md:mt-0'>
+						<div className='flex flex-col sm:flex-row items-center gap-4 sm:gap-6'>
 							<Link
 								href='/terms'
 								className='text-gray-600 hover:text-flutterwave-orange text-sm'>
